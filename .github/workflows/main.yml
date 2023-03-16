@@ -20,5 +20,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
           branch: gh-pages
-          folder: react-multiples2/build
+          folder: react-multiples2/dist
           token: ${{ secrets.GITHUB_TOKEN }}
