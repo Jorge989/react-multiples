@@ -1,17 +1,20 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
+import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEnvelope, FaLock, FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
 import "./styles.scss";
 import anime from "animejs";
-import LogoEshop from "../img/cart.png";
-function App() {
+import LogoEshop from "../../img/cart.png";
+function Signup() {
   const [checkPaswword, setcheckPaswword] = useState(false);
   const [formData, setFormData] = useState({
+    username: "",
     email: "",
     password: "",
+    id: "",
   });
   const handleSignup = (e) => {
     const { id, value } = e.target;
@@ -90,9 +93,9 @@ function App() {
           Submit
         </button>{" "}
         <span>
-          Don't have an account yet?
+          Já possui uma conta?
           <NavLink style={{ textDecoration: "none" }} to="/signup">
-            Signup
+            Login
           </NavLink>
         </span>
       </form>
@@ -100,4 +103,4 @@ function App() {
   );
 }
 
-export default App;
+export default Signup;

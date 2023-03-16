@@ -1,13 +1,11 @@
 import React from "react";
 import App from "../layouts/App";
 
-export const Home = () => {
+const Home = () => {
   return (
     <>
-      <div>
-        <App />
-      </div>
-      <div>Home</div>
+      <App />
     </>
   );
 };
+export default Home;

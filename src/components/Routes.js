@@ -1,24 +1,18 @@
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Routes,
-  Link,
-} from "react-router-dom";
-import { About } from "../pages/About";
-import { Contact } from "../pages/Contact";
-import { Home } from "../pages/Home";
+import React from "react";
 
-const MyRoutes = () => (
-  <Router basename="react-multiples">
-    <>
-      <Routes>
-        <Route exact path="/" element={<Home />}></Route>
-        <Route exact path="/about" element={<About />}></Route>
-        <Route exact path="/contact" element={<Contact />}></Route>
-      </Routes>
-    </>
-  </Router>
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import Signup from "../pages/Signup/Signup";
+import Contact from "../pages/Contact";
+import Home from "../pages/Home";
+import { ToastContainer, toast } from "react-toastify";
+const Routes = () => (
+  <BrowserRouter basename="react-multiples">
+    <Switch>
+      <Route exact path="/" component={Home}></Route>
+      <Route exact path="/signup" component={Signup}></Route>
+      <Route exact path="/contact" component={Contact}></Route>
+    </Switch>
+    <ToastContainer position="top-center" />
+  </BrowserRouter>
 );
-
-export default MyRoutes;
+export default Routes;
