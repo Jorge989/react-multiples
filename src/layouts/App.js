@@ -2,17 +2,21 @@ import React, { useRef, useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import ButtonLogin from "../components/buttons/Button";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import "./styles.scss";
 import anime from "animejs";
-import LogoEshop from "../img/cart.png";
+import LogoText from "../components/logoText/LogoText";
+import User from "../model/User";
+import AuthController from "../controllers/AuthController";
 function App() {
   const [checkPaswword, setcheckPaswword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const authController = new AuthController();
   const handleSignup = (e) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({
@@ -20,15 +24,16 @@ function App() {
       [id]: value,
     }));
   };
-  const handleFormSubmit = (e) => {
-    console.log("formdata0 ", formData);
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
-      console.log("caiu");
-      toast.error("Por favor preencha todos os campos!");
+      toast.error("Erro ao autenticar usuário. Verifique as credenciais!");
     } else {
+      const { email, password } = formData;
+      const user = await authController.authenticateUser(email, password);
+      console.log("User authenticated: ", user);
       toast.success("Usuário autenticado com sucesso!");
-      console.log("formData", formData);
+      // navigate("/");
     }
   };
   const ref = useRef(null);
@@ -48,11 +53,7 @@ function App() {
   };
   return (
     <div className="container">
-      <div className="images">
-        <img src={LogoEshop} />
-        <h1>e</h1>
-        <h1>Shop</h1>
-      </div>
+      <LogoText />
       <form onSubmit={handleFormSubmit}>
         <div className="container-input">
           {" "}
@@ -86,9 +87,7 @@ function App() {
             />
           )}
         </div>
-        <button className="button-86" type="submit" role="button">
-          Submit
-        </button>{" "}
+        <ButtonLogin />
         <span>
           Don't have an account yet?
           <NavLink style={{ textDecoration: "none" }} to="/signup">

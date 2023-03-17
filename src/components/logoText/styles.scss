@@ -1,0 +1,22 @@
+.images {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 50px;
+    margin-right: 7px;
+    filter: drop-shadow(0 0 10px rgba(152, 182, 227, 0.959));
+  }
+  h1 {
+    font-size: 40px;
+    color: #16265e;
+    margin-right: 3px;
+    filter: drop-shadow(0 0 10px rgba(152, 182, 227, 0.959));
+  }
+  h1:nth-child(2) {
+    font-size: 50px;
+    margin-top: -4px;
+    color: #f06d57;
+  }
+}

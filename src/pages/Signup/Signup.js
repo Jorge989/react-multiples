@@ -3,18 +3,24 @@ import { Link, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
+import ButtonLogin from "../../components/buttons/Button";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEnvelope, FaLock, FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
 import "./styles.scss";
 import anime from "animejs";
-import LogoEshop from "../../img/cart.png";
+import LogoText from "../../components/logoText/LogoText";
+import UserSignup from "../../model/UserSignup";
+import SignupController from "../../controllers/SignupController";
 function Signup() {
   const [checkPaswword, setcheckPaswword] = useState(false);
+  const [confirmPassword, setconfirmPassword] = useState(false);
+  const signupController = new SignupController();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
-    id: "",
+    confirmPassword: "",
+    id: uuidv4(),
   });
   const handleSignup = (e) => {
     const { id, value } = e.target;
@@ -23,15 +29,30 @@ function Signup() {
       [id]: value,
     }));
   };
-  const handleFormSubmit = (e) => {
-    console.log("formdata0 ", formData);
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.email || !formData.password) {
-      console.log("caiu");
-      toast.error("Por favor preencha todos os campos!");
+    console.log("formData", formData);
+    if (
+      !formData.username ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword ||
+      !formData.id
+    ) {
+      toast.error("Erro ao criar usuário. Verifique as credenciais!");
     } else {
-      toast.success("Usuário autenticado com sucesso!");
-      console.log("formData", formData);
+      const { username, email, password, confirmPassword, id } = formData;
+      const user = await signupController.registerUser(
+        username,
+        email,
+        password,
+        confirmPassword,
+        id
+      );
+      console.log("User authenticated: ", user);
+      toast.success("Usuário criado com sucesso!");
+      // navigate("/");
     }
   };
   const ref = useRef(null);
@@ -49,14 +70,26 @@ function Signup() {
   const handleCheckPassword = () => {
     setcheckPaswword(!checkPaswword);
   };
+  const handleCheckConfirmPassword = () => {
+    setconfirmPassword(!confirmPassword);
+  };
   return (
     <div className="container">
-      <div className="images">
-        <img src={LogoEshop} />
-        <h1>e</h1>
-        <h1>Shop</h1>
-      </div>
+      <LogoText />
       <form onSubmit={handleFormSubmit}>
+        {" "}
+        <div className="container-input">
+          {" "}
+          <div className="container-icons">
+            <FaUser />
+          </div>
+          <input
+            onChange={handleSignup}
+            placeholder="enter your name"
+            type="text"
+            id="username"
+          />
+        </div>
         <div className="container-input">
           {" "}
           <div className="container-icons">
@@ -88,13 +121,34 @@ function Signup() {
               onClick={handleCheckPassword}
             />
           )}
+        </div>{" "}
+        <div className="container-input">
+          {" "}
+          <div className="container-icons">
+            <FaLock />
+          </div>
+          <input
+            onChange={handleSignup}
+            placeholder="confirma sua senha"
+            type={confirmPassword ? "text" : "password"}
+            id="confirmPassword"
+          />{" "}
+          {confirmPassword ? (
+            <FaEye
+              className="password-icon"
+              onClick={handleCheckConfirmPassword}
+            />
+          ) : (
+            <FaEyeSlash
+              className="password-icon"
+              onClick={handleCheckConfirmPassword}
+            />
+          )}
         </div>
-        <button className="button-86" type="submit" role="button">
-          Submit
-        </button>{" "}
+        <ButtonLogin />
         <span>
           Já possui uma conta?
-          <NavLink style={{ textDecoration: "none" }} to="/signup">
+          <NavLink style={{ textDecoration: "none" }} to="/">
             Login
           </NavLink>
         </span>
