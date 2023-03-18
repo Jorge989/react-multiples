@@ -19,6 +19,11 @@ jobs:
       - name: Build
         run: yarn build
       - name: Configure Git
+        run: |
+          git config --global user.email "attiejorge89@gmail.com"
+          git config --global user.name "Jorge989"
+          git checkout master
+          git pull origin master
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
