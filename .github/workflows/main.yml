@@ -20,7 +20,6 @@ jobs:
         run: yarn build
       - name: Configure Git
         run: |
-          git config --global user.email "attiejorge89@gmail.com"
           git config --global user.name "Jorge989"
           git remote add origin https://github.com/Jorge989/react-multiples.git
           git checkout master
