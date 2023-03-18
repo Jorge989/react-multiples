@@ -33,7 +33,6 @@ function App() {
       const user = await authController.authenticateUser(email, password);
       console.log("User authenticated: ", user);
       toast.success("Usuário autenticado com sucesso!");
-      // navigate("/");
     }
   };
   const ref = useRef(null);
