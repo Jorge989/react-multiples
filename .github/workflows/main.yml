@@ -19,11 +19,6 @@ jobs:
       - name: Build
         run: yarn build
       - name: Configure Git
-        run: |
-          git config --global user.name "Jorge989"
-          git remote add origin https://github.com/Jorge989/react-multiples.git
-          git checkout master
-          git pull origin master
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
