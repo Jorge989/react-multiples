@@ -1,19 +1,24 @@
 import UserSignup from "../model/UserSignup";
+import api from "../utils/axios";
 
 class SignupController {
   registerUser(user) {
-    if (
-      !user.username ||
-      !user.email ||
-      !user.password ||
-      !user.confirmPassword ||
-      !user.id
-    ) {
-      console.log("true");
-      return false;
-    }
-    console.log("false");
-    return true;
+    const signupUser = {
+      username: user.username,
+      email: user.email,
+      password: user.password,
+      confirmPassword: user.confirmPassword,
+    };
+    return api
+      .post("auth/signup", signupUser)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error);
+        return Promise.reject(error);
+      });
   }
 }
+
 export default SignupController;

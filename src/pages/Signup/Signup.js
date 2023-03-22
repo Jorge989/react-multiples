@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import ButtonLogin from "../../components/buttons/Button";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEnvelope, FaLock, FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
@@ -13,14 +13,15 @@ import UserSignup from "../../model/UserSignup";
 import SignupController from "../../controllers/SignupController";
 function Signup() {
   const [checkPaswword, setcheckPaswword] = useState(false);
-  const [confirmPassword, setconfirmPassword] = useState(false);
+  const [confirmPasswordInput, setconfirmPasswordInput] = useState(false);
   const signupController = new SignupController();
+  const history = useHistory();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
-    id: uuidv4(),
+    // id: uuidv4(),
   });
   const handleSignup = (e) => {
     const { id, value } = e.target;
@@ -33,26 +34,23 @@ function Signup() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     console.log("formData", formData);
-    if (
-      !formData.username ||
-      !formData.email ||
-      !formData.password ||
-      !formData.confirmPassword ||
-      !formData.id
-    ) {
-      toast.error("Erro ao criar usuário. Verifique as credenciais!");
-    } else {
-      const { username, email, password, confirmPassword, id } = formData;
-      const user = await signupController.registerUser(
-        username,
-        email,
-        password,
-        confirmPassword,
-        id
-      );
+    // if (
+    //   !formData.username ||
+    //   !formData.email ||
+    //   !formData.password ||
+    //   !formData.confirmPassword
+    // ) {
+    //   toast.error("Erro ao criar usuário. Verifique as credenciais!");
+    // } else {
+    const signupUser = formData;
+    try {
+      const user = await signupController.registerUser(signupUser);
       console.log("User authenticated: ", user);
       toast.success("Usuário criado com sucesso!");
-      // navigate("/");
+      history.push("/");
+    } catch (error) {
+      console.log("🚀 ~ file: Signup.js:52 ~ handleFormSubmit ~ error:", error);
+      toast.error(`${error.response.data.msg}`);
     }
   };
   const ref = useRef(null);
@@ -71,7 +69,7 @@ function Signup() {
     setcheckPaswword(!checkPaswword);
   };
   const handleCheckConfirmPassword = () => {
-    setconfirmPassword(!confirmPassword);
+    setconfirmPasswordInput(!confirmPasswordInput);
   };
   return (
     <div className="container">
@@ -130,10 +128,10 @@ function Signup() {
           <input
             onChange={handleSignup}
             placeholder="confirma sua senha"
-            type={confirmPassword ? "text" : "password"}
+            type={confirmPasswordInput ? "text" : "password"}
             id="confirmPassword"
           />{" "}
-          {confirmPassword ? (
+          {confirmPasswordInput ? (
             <FaEye
               className="password-icon"
               onClick={handleCheckConfirmPassword}
