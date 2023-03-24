@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .button-86 {
   all: unset;
   position: relative;
@@ -15,7 +16,8 @@
   align-items: center;
   justify-content: center;
   white-space: nowrap;
-  user-select: none;
+  -moz-user-select: none;
+       user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
   margin-top: 15px;
@@ -43,7 +45,7 @@
   transform: translate(10px, 10px);
   width: 35px;
   height: 35px;
-  background: #ffffff15;
+  background: rgba(255, 255, 255, 0.0823529412);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   border-radius: 50px;
@@ -66,20 +68,20 @@
   transition: 0s;
   transform: translate(0, 5%);
 }
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
-
 .spin {
   position: absolute; /* torna a posição do spinner absoluta em relação ao botão */
   top: 50%; /* posiciona o spinner verticalmente no centro do botão */
   right: 8px; /* posiciona o spinner à direita do botão */
-
   animation: spin 1s linear infinite;
   font-size: 20px;
 }
+
 @media (max-width: 900px) {
   .button-86 {
     all: unset;
@@ -97,9 +99,10 @@
     align-items: center;
     justify-content: center;
     white-space: nowrap;
-    user-select: none;
+    -moz-user-select: none;
+         user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
     margin-top: 15px;
   }
-}
+}/*# sourceMappingURL=styles.css.map */

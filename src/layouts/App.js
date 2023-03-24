@@ -1,19 +1,27 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
+
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../features/userSlice";
 import { useHistory } from "react-router-dom";
 import { navigateToUrl } from "single-spa";
 import ButtonLogin from "../components/buttons/Button";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import "./styles.scss";
+import Parcel from "single-spa-react/parcel";
 import anime from "animejs";
 import LogoText from "../components/logoText/LogoText";
 import User from "../model/User";
 import AuthController from "../controllers/AuthController";
 function App() {
   const [checkPaswword, setcheckPaswword] = useState(false);
+  const { user, isLoading, isLoadingButton } = useSelector(
+    (store) => store.user
+  );
   const history = useHistory();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -26,18 +34,34 @@ function App() {
       [id]: value,
     }));
   };
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    // if (!formData.email || !formData.password) {
-    //   toast.error("Erro ao autenticar usuário. Verifique as credenciais!");
-    // } else {
-    const loginUser = formData;
+    const loginUserData = formData;
     try {
-      const user = await authController.authenticateUser(loginUser);
-      toast.success("Usuário autenticado com sucesso!");
-      navigateToUrl("/react-parcel");
+      const loginUserAction = dispatch(loginUser(loginUserData));
+      loginUserAction.then((result) => {
+        if (result.type === "auth/login/fulfilled") {
+          if (user) {
+            dispatchEvent(
+              new CustomEvent("@ja/react-multiples/user/login", {
+                detail: {
+                  user: user,
+                },
+              })
+            );
+            console.log("user aque", user);
+          }
+
+          toast.success("Usuário autenticado com sucesso!");
+          setTimeout(() => {
+            navigateToUrl("/react-parcel");
+          }, 2000);
+        }
+      });
     } catch (error) {
-      toast.error(`${error.response.data.msg}`);
+      console.log("🚀 ~ file: Signup.js:65 ~ handleFormSubmit ~ error:", error);
+      toast.error(`${error}`);
     }
   };
 
@@ -59,6 +83,12 @@ function App() {
   return (
     <div className="container">
       <LogoText />
+
+      <Parcel
+        config={() => System.import("@JA/react-parcel")}
+        fallback={<div style={{ display: "none" }}></div>}
+      />
+
       <form onSubmit={handleFormSubmit}>
         <div className="container-input">
           {" "}
@@ -92,7 +122,7 @@ function App() {
             />
           )}
         </div>
-        <ButtonLogin />
+        <ButtonLogin isLoading={isLoadingButton} />
         <span>
           Don't have an account yet?
           <NavLink style={{ textDecoration: "none" }} to="/signup">

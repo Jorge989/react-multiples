@@ -1,21 +1,33 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
-import { v4 as uuidv4 } from "uuid";
 import { useHistory } from "react-router-dom";
 import ButtonLogin from "../../components/buttons/Button";
 import "react-toastify/dist/ReactToastify.css";
-import { FaEnvelope, FaLock, FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
+import {
+  FaEnvelope,
+  FaLock,
+  FaUser,
+  FaEye,
+  FaEyeSlash,
+  FaSpinner,
+} from "react-icons/fa";
 import "./styles.scss";
 import anime from "animejs";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../../features/userSlice";
 import LogoText from "../../components/logoText/LogoText";
-import UserSignup from "../../model/UserSignup";
 import SignupController from "../../controllers/SignupController";
 function Signup() {
+  const { user, isLoading, isLoadingButton } = useSelector(
+    (store) => store.user
+  );
+
   const [checkPaswword, setcheckPaswword] = useState(false);
   const [confirmPasswordInput, setconfirmPasswordInput] = useState(false);
   const signupController = new SignupController();
   const history = useHistory();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -33,26 +45,21 @@ function Signup() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log("formData", formData);
-    // if (
-    //   !formData.username ||
-    //   !formData.email ||
-    //   !formData.password ||
-    //   !formData.confirmPassword
-    // ) {
-    //   toast.error("Erro ao criar usuário. Verifique as credenciais!");
-    // } else {
     const signupUser = formData;
     try {
-      const user = await signupController.registerUser(signupUser);
-      console.log("User authenticated: ", user);
-      toast.success("Usuário criado com sucesso!");
-      history.push("/");
+      const registerUserAction = dispatch(registerUser(signupUser));
+      registerUserAction.then((result) => {
+        if (result.type === "auth/signup/fulfilled") {
+          toast.success("Usuário criado com sucesso!");
+          history.push("/");
+        }
+      });
     } catch (error) {
       console.log("🚀 ~ file: Signup.js:52 ~ handleFormSubmit ~ error:", error);
       toast.error(`${error.response.data.msg}`);
     }
   };
+
   const ref = useRef(null);
   useEffect(() => {
     anime({
@@ -143,7 +150,7 @@ function Signup() {
             />
           )}
         </div>
-        <ButtonLogin />
+        <ButtonLogin isLoading={isLoadingButton} />
         <span>
           Já possui uma conta?
           <NavLink style={{ textDecoration: "none" }} to="/">

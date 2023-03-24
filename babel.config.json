@@ -29,5 +29,7 @@
         ]
       ]
     }
-  }
+  },
+  "ignore": ["**/*.test.js"],
+  "sourceType": "unambiguous"
 }
