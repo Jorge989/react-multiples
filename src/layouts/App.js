@@ -97,7 +97,7 @@ function App() {
           </div>
           <input
             onChange={handleSignup}
-            placeholder="enter the e-mail"
+            placeholder="digite o email"
             type="email"
             id="email"
           />
@@ -109,7 +109,7 @@ function App() {
           </div>
           <input
             onChange={handleSignup}
-            placeholder="enter the password"
+            placeholder="digite a senha"
             type={checkPaswword ? "text" : "password"}
             id="password"
           />{" "}
@@ -124,7 +124,7 @@ function App() {
         </div>
         <ButtonLogin isLoading={isLoadingButton} />
         <span>
-          Don't have an account yet?
+          Não tem uma conta ainda?
           <NavLink style={{ textDecoration: "none" }} to="/signup">
             Signup
           </NavLink>

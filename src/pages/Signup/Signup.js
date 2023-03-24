@@ -90,7 +90,7 @@ function Signup() {
           </div>
           <input
             onChange={handleSignup}
-            placeholder="enter your name"
+            placeholder="digite o nome"
             type="text"
             id="username"
           />
@@ -102,7 +102,7 @@ function Signup() {
           </div>
           <input
             onChange={handleSignup}
-            placeholder="enter the e-mail"
+            placeholder="digite o e-mail"
             type="email"
             id="email"
           />
@@ -114,7 +114,7 @@ function Signup() {
           </div>
           <input
             onChange={handleSignup}
-            placeholder="enter the password"
+            placeholder="digite a senha"
             type={checkPaswword ? "text" : "password"}
             id="password"
           />{" "}
